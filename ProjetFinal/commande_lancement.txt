@@ -1,0 +1,16 @@
+docker network create myBridge
+
+docker pull mariadb:11
+docker pull vullwen/flask-app
+docker pull vullwen/vue-nginx
+
+docker volume create mariadb_data
+docker run --name mariadb11 --network myBridge -e MYSQL_ROOT_PASSWORD=esgi -v mariadb_data:/var/lib/mysql -v /home/vullwen/ProjetFinal/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql -d mariadb:11
+
+cd back
+docker run --name flask-app --network myBridge vullwen/flask-app
+
+cd ../front
+docker run --name vue-nginx --network myBridge vullwen/vue-nginx
+
+
